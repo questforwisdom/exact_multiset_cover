@@ -2,8 +2,8 @@ from tempfile import mkstemp
 
 from numpy.testing import assert_array_equal
 
-from exact_cover.helpers import create_numpy_array
-from exact_cover.io import load_problem, save_problem
+from exact_multiset_cover.helpers import create_numpy_array
+from exact_multiset_cover.io import load_problem, save_problem
 
 
 def test_basic_roundtrip():

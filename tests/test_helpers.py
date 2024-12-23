@@ -7,9 +7,9 @@ import pytest
 from hypothesis import given, settings, HealthCheck
 from hypothesis.strategies import integers
 
-from exact_cover import get_exact_cover
-from exact_cover.helpers import reduce, split_problem, is_solution
-from exact_cover.error import NoSolution, CannotSplitFurther
+from exact_multiset_cover import get_exact_cover
+from exact_multiset_cover.helpers import reduce, split_problem, is_solution
+from exact_multiset_cover.error import NoSolution, CannotSplitFurther
 
 from .config import GLOBAL_CONFIG
 from .test_exact_cover_problems import (

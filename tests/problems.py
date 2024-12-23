@@ -1,6 +1,6 @@
 import numpy as np
 
-from exact_cover.io import DTYPE_FOR_ARRAY
+from exact_multiset_cover.io import DTYPE_FOR_ARRAY
 
 # one specific problem that I had trouble with
 # originally based on solving the trivial problem

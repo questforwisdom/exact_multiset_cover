@@ -1,7 +1,7 @@
 import numpy as np
 
-from exact_cover import get_all_solutions
-from exact_cover.io import DTYPE_FOR_ARRAY
+from exact_multiset_cover import get_all_solutions
+from exact_multiset_cover.io import DTYPE_FOR_ARRAY
 
 
 def test_exact_cover():

@@ -1,4 +1,4 @@
-from exact_cover import get_all_solutions
+from exact_multiset_cover import get_all_solutions
 
 from . import problems
 

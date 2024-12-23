@@ -6,9 +6,9 @@ from hypothesis.strategies import integers, lists, booleans
 from hypothesis.strategies import composite, one_of, permutations
 from hypothesis.strategies import just, sampled_from
 
-from exact_cover import get_exact_cover
-from exact_cover.error import NoSolution
-from exact_cover.io import load_problem, DTYPE_FOR_ARRAY
+from exact_multiset_cover import get_exact_cover
+from exact_multiset_cover.error import NoSolution
+from exact_multiset_cover.io import load_problem, DTYPE_FOR_ARRAY
 
 from tests.config import GLOBAL_CONFIG
 

@@ -25,7 +25,7 @@ import logging
 import math
 import numpy as np
 import sys
-import exact_cover as ec
+import exact_multiset_cover as ec
 import getopt
 
 

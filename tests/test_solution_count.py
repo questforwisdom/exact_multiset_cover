@@ -1,7 +1,7 @@
 import numpy as np
 
-from exact_cover import get_solution_count
-from exact_cover.io import DTYPE_FOR_ARRAY
+from exact_multiset_cover import get_solution_count
+from exact_multiset_cover.io import DTYPE_FOR_ARRAY
 
 from .problems import small_trimino_problem
 from .problems import detailed_wikipedia_problem

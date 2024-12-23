@@ -5,7 +5,7 @@ import numpy as np
 
 from ValgrindCI.parse import ValgrindData
 
-from exact_cover import get_exact_cover
+from exact_multiset_cover import get_exact_cover
 
 
 def run_debug():

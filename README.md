@@ -1,13 +1,13 @@
-Finding Exact Covers in NumPy
-=============================
+Finding Exact Covers in NumPy for Multisets
+===========================================
 
-[![PyPI version](https://badge.fury.io/py/exact-cover.svg)](https://badge.fury.io/py/exact-cover)
-![Deploy wheels to pypi](https://github.com/jwg4/exact_cover/workflows/Deploy%20wheels%20to%20pypi/badge.svg)
-![Run Python tests](https://github.com/jwg4/exact_cover/workflows/Run%20Python%20tests/badge.svg)
+[![PyPI version](https://badge.fury.io/py/exact-multiset-cover.svg)](https://badge.fury.io/py/exact-multiset-cover)
+![Deploy wheels to pypi](https://github.com/questforwisdom/exact_multiset_cover/workflows/Deploy%20wheels%20to%20pypi/badge.svg)
+![Run Python tests](https://github.com/questforwisdom/exact_multiset_cover/workflows/Run%20Python%20tests/badge.svg)
 
-This is a Python 3 package to solve exact cover problems using Numpy. It is based on https://github.com/moygit/exact_cover_np by Moy Easwaran. Jack Grahl ported it to Python 3, fixed some bugs and made lots of small improvements to the packaging.
+This is a Python 3 package to solve exact cover problems using Numpy. It is based on https://github.com/moygit/exact_cover_np by Moy Easwaran. Jack Grahl ported it to Python 3, fixed some bugs and made lots of small improvements to the packaging. Niklas Zapatka extended to algorithm to multisets.
 
-The original package by Moy was designed to solve sudoku. Now this package is only designed to solve exact cover problems given as boolean arrays. It can be used to solve sudoku and a variety of combinatorial problems. However the code to reduce a sudoku to an exact cover problem is no longer part of this project. It can be found at:
+The original package by Moy was designed to solve sudoku. Now this package is only designed to solve exact cover problems given as byte arrays. The number in each cell states the multiplicity of the respective elementin the multiset. It can be used to solve sudoku and a variety of combinatorial problems. However the code to reduce a sudoku to an exact cover problem is no longer part of this project. It can be found at:
  - https://pypi.org/project/xudoku/
  - https://github.com/jwg4/xudoku
 
@@ -36,6 +36,11 @@ Dancing Links for efficient backtracking.  Please see
 [Knuth's paper](http://arxiv.org/pdf/cs/0011047v1)
 for details.
 
+This fork extends the algorithm such that X and the sets in S
+are multisets (also known as bags). For instance, if X contains the
+element _a_ two times, a solution must include either exactly one set
+containing _a_ twice or exactly two sets containing _a_ once. 
+
 How to Use It
 -------------
 
@@ -51,7 +56,7 @@ exact cover: each element of X is in one of these sets (i.e. is
 "covered" by one of these sets), and no element of X is in more than
 one.
 
-We'd use `exact_cover` to solve the problem as follows:
+We'd use `exact_multiset_cover` to solve the problem as follows:
 using 1 to denote that a particular member of X is in a subset and 0 to
 denote that it's not, we can represent the sets as
 
@@ -60,10 +65,10 @@ denote that it's not, we can represent the sets as
     C = 0,1,1,0,0    # etc.
     D = 0,0,0,0,1
 
-Now we can call `exact_cover`:
+Now we can call `exact_multiset_cover`:
 
     >>> import numpy as np
-    >>> import exact_cover as ec
+    >>> import exact_multiset_cover as ec
     >>> S = np.array([[1,0,0,1,0],[1,1,1,0,0],[0,1,1,0,0],[0,0,0,0,1]], dtype=bool)
     >>> print(ec.get_exact_cover(S))
     [0 2 3]
@@ -123,7 +128,7 @@ Repository
 
 - build/ The location where files are built.
 - dist/ The location for fully prepared files.
-- exact_cover/ The Python code.
+- exact_multiset_cover/ The Python code.
 - obj/ Where the compiled C code is going to be output.
 - src/ The C sources.
 - tests/ Tests for both the Python package and the C code.
@@ -133,5 +138,7 @@ Acknowledgements
 ----------------
 
 Thanks very much to Moy Easwaran (https://github.com/moygit) for his inspiring work!
+
+Thanks to Jack Grahl for porting this to Python 3 and improving the code!
 
 Munit aka µnit (https://nemequ.github.io/munit/) is a wonderful unit testing framework for C code.

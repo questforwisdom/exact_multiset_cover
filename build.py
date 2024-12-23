@@ -5,8 +5,8 @@ import numpy
 
 # define the extension module
 src_dir = "src/"
-exact_cover_impl = Extension(
-    "exact_cover_impl",
+exact_multiset_cover_impl = Extension(
+    "exact_multiset_cover_impl",
     sources=[
         src_dir + "exact_cover.c",
         src_dir + "dlx.c",
@@ -22,7 +22,7 @@ def build(setup_kwargs):
         {
             # Doubtful that we need to specify packages here?
             # Poetry could probably get this right using pyproject.toml
-            "packages": ["exact_cover"],
-            "ext_modules": [exact_cover_impl],
+            "packages": ["exact_multiset_cover"],
+            "ext_modules": [exact_multiset_cover_impl],
         }
     )
