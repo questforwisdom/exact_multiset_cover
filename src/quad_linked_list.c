@@ -6,9 +6,10 @@
  * data changes:
  */
 
-data_type create_data(int internal_data, struct node *list_data) {
+data_type create_data(int internal_data, int multiplicity, struct node *list_data) {
     data_type new_data = malloc(sizeof *new_data);
-    new_data->data = internal_data;
+    new_data->counter = internal_data;
+    new_data->multiplicity = multiplicity;
     new_data->list_data = list_data;
     return new_data;
 }
@@ -162,7 +163,7 @@ void cover_column(list col) {
         for (next = row; (next = get_right(next)) != row; ) {
             other_col = get_data(next)->list_data;
             cover_vertically(next);
-            get_data(other_col)->data -= 1;
+            get_data(other_col)->counter -= 1;
         }
     }
     return;
@@ -174,7 +175,7 @@ void uncover_column(list col) {
     for (row = col; (row = get_up(row)) != col; ) {
         for (next = row; (next = get_left(next)) != row; ) {
             other_col = get_data(next)->list_data;
-            get_data(other_col)->data += 1;
+            get_data(other_col)->counter += 1;
             uncover_vertically(next);
         }
     }

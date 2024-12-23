@@ -30,10 +30,11 @@ list create_headers_list(int col_count) {
     list column_header, sparse_matrix = NULL;
     int col_num;
 
-    sparse_matrix = create_node(create_data(0, NULL));
+    sparse_matrix = create_node(create_data(0, 0, NULL));
     if (not_empty(sparse_matrix))
         for (col_num = 0, column_header = sparse_matrix; col_num < col_count; ++col_num) {
-            new_node = create_node(create_data(0, NULL));
+            int multiplicity = 1; // TODO: add parameter for multiplicity
+            new_node = create_node(create_data(0, multiplicity, NULL)); 
             if (is_empty(new_node)) {
                 // Uh oh.  Couldn't create a new node.  We need to clean up and abort.
                 destroy_entire_grid(sparse_matrix);
@@ -56,8 +57,9 @@ list populate_sparse_matrix(list sparse_matrix, int row_count, int col_count, ch
     for (row_num = 0; row_num < row_count; ++row_num) {
         row_list = create_empty_list();
         for (col_num = 0, col = get_right(sparse_matrix); col_num < col_count; ++col_num, col = get_right(col)) {
-            if (matrix[(row_num*col_count)+col_num] != 0) {
-                new_node = create_node(create_data(row_num, col));
+            int multiplicity = matrix[(row_num*col_count)+col_num];
+            if (multiplicity != 0) {
+                new_node = create_node(create_data(row_num, multiplicity, col));
                 // If we can't create a new node, abort!
                 if (is_empty(new_node)) {
                     destroy_entire_grid(sparse_matrix);   // ABORT!
@@ -65,7 +67,7 @@ list populate_sparse_matrix(list sparse_matrix, int row_count, int col_count, ch
                 }
                 row_list = insert_horizontally_after(row_list, new_node);
                 insert_vertically_after(get_up(col), new_node);
-                get_data(col)->data += 1;
+                get_data(col)->counter += 1;
             }
         }
     }
@@ -76,9 +78,9 @@ list choose_column_with_min_data(list sparse_matrix, int max) {
     int min = max;
     list col = sparse_matrix, min_col = NULL;
     while ((col = get_right(col)) != sparse_matrix) {
-        if (get_data(col)->data < min || (get_data(col)->data == min && min_col == NULL)) {
+        if (get_data(col)->counter < min || (get_data(col)->counter == min && min_col == NULL)) {
             min_col = col;
-            min = get_data(col)->data;
+            min = get_data(col)->counter;
         }
     }
     return min_col;
@@ -94,12 +96,13 @@ void print_sparse_matrix_transpose(list sparse_matrix, int row_count) {
 void print_column(list col, int row_count) {
     node_ptr row;
     int row_num;
-    printf("%d:", get_data(col)->data);
+    printf("%d:", get_data(col)->counter);
     row = col;
     for (row_num = 0; (row = get_down(row)) != col; ) {
-        for (; row_num < get_data(row)->data; ++row_num)
+        for (; row_num < get_data(row)->counter; ++row_num)
             printf("0,");
-        printf("1,"), ++row_num;
+        printf("%d,", get_data(row)->multiplicity); 
+        ++row_num;
     }
     for (; row_num < row_count; ++row_num) printf("0,");
     putchar('\n');

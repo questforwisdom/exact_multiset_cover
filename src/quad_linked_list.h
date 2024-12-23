@@ -11,11 +11,12 @@
  */
 
 typedef struct {
-    int data;
+    int counter;
+    int multiplicity;
     struct node *list_data;
 } *data_type;
 
-data_type create_data(int, struct node *);
+data_type create_data(int, int, struct node *);
 void delete_data(data_type);
 
 /*------------------------------------------------------------------*/

@@ -24,12 +24,12 @@ int search(list sparse_matrix, int k, int max, int *solution) {
     // 2. There's a column with only zeros. This branch of the search
     //    tree has no solutions and we need to backtrack.
     col = choose_column_with_min_data(sparse_matrix, max);
-    if (get_data(col)->data == 0) return 0;
+    if (get_data(col)->counter == 0) return 0;
 
     // Main algorithm:
     cover_column(col);
     for (row = col; (row = get_down(row)) != col; ) {
-        solution[k] = get_data(row)->data;  // save the row number
+        solution[k] = get_data(row)->counter;  // save the row number
         for (next = row; (next = get_right(next)) != row; )
             cover_column(get_data(next)->list_data);
         result = search(sparse_matrix, k+1, max, solution);
@@ -53,12 +53,12 @@ int count(list sparse_matrix, int k, int max, int *solution) {
     // 2. There's a column with only zeros. This branch of the search
     //    tree has no solutions and we need to backtrack.
     col = choose_column_with_min_data(sparse_matrix, max);
-    if (get_data(col)->data == 0) return 0;
+    if (get_data(col)->counter == 0) return 0;
 
     // Main algorithm:
     cover_column(col);
     for (row = col; (row = get_down(row)) != col; ) {
-        solution[k] = get_data(row)->data;  // save the row number
+        solution[k] = get_data(row)->counter;  // save the row number
         for (next = row; (next = get_right(next)) != row; )
             cover_column(get_data(next)->list_data);
         result = count(sparse_matrix, k+1, max, solution);
@@ -124,12 +124,12 @@ int enumerate(list sparse_matrix, int k, int max, int *solution, int *solutions,
     // 2. There's a column with only zeros. This branch of the search
     //    tree has no solutions and we need to backtrack.
     col = choose_column_with_min_data(sparse_matrix, solution_size);
-    if (get_data(col)->data == 0) return 0;
+    if (get_data(col)->counter == 0) return 0;
 
     // Main algorithm:
     cover_column(col);
     for (row = col; (row = get_down(row)) != col; ) {
-        solution[k] = get_data(row)->data;  // save the row number
+        solution[k] = get_data(row)->counter;  // save the row number
         for (next = row; (next = get_right(next)) != row; )
             cover_column(get_data(next)->list_data);
         result = enumerate(sparse_matrix, k+1, max - c, solution, solutions + c * solution_size, solution_size);
