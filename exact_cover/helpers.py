@@ -42,8 +42,8 @@ def reduce(a):
 def create_numpy_array(a):
     """
     >>> create_numpy_array([[0, 1], [1, 0]])
-    array([[False,  True],
-           [ True, False]])
+    array([[0, 1],
+           [1, 0]], dtype=int8)
     """
     return np.array(a, dtype=DTYPE_FOR_ARRAY)
 

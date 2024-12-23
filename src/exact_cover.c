@@ -10,7 +10,7 @@
 #include "dlx.h"
 
 #define _EXACT_COVER_NP_DIM_ERROR_ "get_exact_cover(...) needs a 2-dimensional (m x n) matrix."
-#define _EXACT_COVER_NP_TYPE_ERROR_ "get_exact_cover(...) needs a matrix of dtype 'bool'."
+#define _EXACT_COVER_NP_TYPE_ERROR_ "get_exact_cover(...) needs a matrix of dtype 'int8'."
 #define _EXACT_COVER_NP_ORDER_ERROR_ "get_exact_cover(...) needs a matrix which is 'C contiguous'"
 
 
@@ -24,7 +24,7 @@ static bool not_2d_int_array(PyArrayObject *in_array) {
         PyErr_SetString(PyExc_ValueError, _EXACT_COVER_NP_DIM_ERROR_);
         return 1;
     }
-    if (PyArray_TYPE(in_array) != NPY_BOOL) {
+    if (PyArray_TYPE(in_array) != NPY_BYTE) {
         PyErr_SetString(PyExc_TypeError, _EXACT_COVER_NP_TYPE_ERROR_);
         return 1;
     }

@@ -1,6 +1,6 @@
 import numpy as np
 
-DTYPE_FOR_ARRAY = np.bool_
+DTYPE_FOR_ARRAY = np.int8
 
 
 def load_problem(filename):
