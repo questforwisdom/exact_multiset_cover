@@ -20,7 +20,7 @@ def make_test_from_problem(problem):
 
     def test():
         # xxx not yet available
-        result = normalize(get_all_solutions(problem["data"]))
+        result = normalize(get_all_solutions(problem["data"], target=problem.get("target", None)))
         expected = normalize(problem["all_solutions"])
         assert result == expected
 

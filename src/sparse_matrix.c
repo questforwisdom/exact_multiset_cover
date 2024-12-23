@@ -18,14 +18,14 @@
  */
 
 
-list create_sparse (int row_count, int col_count, char matrix[]) {
-    list sparse_matrix = create_headers_list(col_count);
+list create_sparse (int row_count, int col_count, char matrix[], char target[]) {
+    list sparse_matrix = create_headers_list(col_count, target);
     if (not_empty(sparse_matrix))
         sparse_matrix = populate_sparse_matrix(sparse_matrix, row_count, col_count, matrix);
     return sparse_matrix;
 }
 
-list create_headers_list(int col_count) {
+list create_headers_list(int col_count, char target[]) {
     node_ptr new_node;
     list column_header, sparse_matrix = NULL;
     int col_num;
@@ -33,7 +33,13 @@ list create_headers_list(int col_count) {
     sparse_matrix = create_node(create_data(0, 0, NULL));
     if (not_empty(sparse_matrix))
         for (col_num = 0, column_header = sparse_matrix; col_num < col_count; ++col_num) {
-            int multiplicity = 1; // TODO: add parameter for multiplicity
+            int multiplicity = target[col_num]; 
+            if (multiplicity <= 0) {
+                // Uh oh.  Invalid input parameter.  We need to clean up and abort.
+                destroy_entire_grid(sparse_matrix);
+                sparse_matrix = NULL;
+                break;
+            }
             new_node = create_node(create_data(0, multiplicity, NULL)); 
             if (is_empty(new_node)) {
                 // Uh oh.  Couldn't create a new node.  We need to clean up and abort.
@@ -58,7 +64,7 @@ list populate_sparse_matrix(list sparse_matrix, int row_count, int col_count, ch
         row_list = create_empty_list();
         for (col_num = 0, col = get_right(sparse_matrix); col_num < col_count; ++col_num, col = get_right(col)) {
             int multiplicity = matrix[(row_num*col_count)+col_num];
-            if (multiplicity != 0) {
+            if (multiplicity > 0 && multiplicity <= get_data(col)->multiplicity) {
                 new_node = create_node(create_data(row_num, multiplicity, col));
                 // If we can't create a new node, abort!
                 if (is_empty(new_node)) {

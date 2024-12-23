@@ -55,6 +55,11 @@ def test_exact_cover_no_solution():
     result = get_solution_count(data)
     assert result == 0
 
+def test_exact_multiset_cover_no_solution():
+    data = np.array([[1, 0, 0], [0, 1, 0], [0, 1, 2], [1, 0, 3]], dtype=DTYPE_FOR_ARRAY)
+    target = np.array([1, 2, 3], dtype=DTYPE_FOR_ARRAY)
+    result = get_solution_count(data, target=target)
+    assert result == 0
 
 def test_simple_solution_count():
     """

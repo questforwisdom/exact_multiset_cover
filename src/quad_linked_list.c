@@ -64,6 +64,14 @@ void set_down(node_ptr N, node_ptr down) {
     N->down = down;
 }
 
+void set_dangling_next(node_ptr N, node_ptr dangling_next) {
+    N->dangling_next = dangling_next;
+}
+
+void set_dangling_previous(node_ptr N, node_ptr dangling_previous) {
+    N->dangling_previous = dangling_previous;
+}
+
 data_type get_data(node_ptr N) {
     return N->data;
 }
@@ -82,6 +90,14 @@ struct node *get_up(node_ptr N) {
 
 struct node *get_down(node_ptr N) {
     return N->down;
+}
+
+struct node *get_dangling_next(node_ptr N) {
+    return N->dangling_next;
+}
+
+struct node *get_dangling_previous(node_ptr N) {
+    return N->dangling_previous;
 }
 
 // Inserts at current cursor.
@@ -132,6 +148,27 @@ list insert_vertically_after (list orig_list, node_ptr new_node_ptr) {
     return insert_vertically(orig_list, new_node_ptr);
 }
 
+list insert_dangling_after(list orig_list, node_ptr new_node_ptr) {
+    if (not_empty(new_node_ptr) && not_empty(orig_list)) {
+        orig_list = get_dangling_next(orig_list);
+        new_node_ptr->dangling_next                 = orig_list;
+        new_node_ptr->dangling_previous             = orig_list->dangling_previous;
+        orig_list->dangling_previous->dangling_next = new_node_ptr;
+        orig_list->dangling_previous                = new_node_ptr;
+    }
+
+    return new_node_ptr;
+}
+
+list new_dangling_stack(node_ptr new_node_ptr) {
+    if (not_empty(new_node_ptr)) {
+        new_node_ptr->dangling_next     = new_node_ptr;
+        new_node_ptr->dangling_previous = new_node_ptr;
+    }
+
+    return new_node_ptr;
+}
+
 //
 // Returns pointer to right node, or NULL if there's only one node.
 // General usage would be: saved_N = N; L = cover(N);
@@ -155,31 +192,72 @@ node_ptr cover_vertically(node_ptr N) {
         return NULL;
 }
 
-void cover_column(list col) {
-    list row, other_col, next;
+void cover_row(list row) {
+    list next, other_col;
+    for (next = row; (next = get_right(next)) != row; ) {
+        other_col = get_data(next)->list_data;
+        cover_vertically(next);
+        get_data(other_col)->counter -= 1;
+    }
+}
 
-    cover_horizontally(col);
-    for (row = col; (row = get_down(row)) != col; ) {
-        for (next = row; (next = get_right(next)) != row; ) {
-            other_col = get_data(next)->list_data;
-            cover_vertically(next);
-            get_data(other_col)->counter -= 1;
+void uncover_row(list row) {
+    list next, other_col;
+    for (next = row; (next = get_left(next)) != row; ) {
+        other_col = get_data(next)->list_data;
+        get_data(other_col)->counter += 1;
+        uncover_vertically(next);
+    }
+}
+
+void cover_column(list col, list selected_row) {
+    list row, stack;
+    get_data(col)->multiplicity -= get_data(selected_row)->multiplicity;
+    if (get_data(col)->multiplicity == 0) {
+        cover_horizontally(col);
+        for (row = col; (row = get_down(row)) != col; ) {
+            if (row != selected_row) { // selected row is removed through cover_column calls for the other columns
+                cover_row(row);
+            }
+        }
+    }
+    else {
+        cover_vertically(selected_row);
+        get_data(col)->counter -= 1;
+        stack = new_dangling_stack(selected_row);
+        // TODO: currently, duplicate solutions may be found: the current column can e.g. be covered by one row with m=2 and one with m=3, then all_solutions will pick e.g. m=2 first and then m=3 and during a later iteration (i.e. sibling level in the search tree?) m=3 first and then m=2
+        for (row = col; (row = get_down(row)) != col; ) {
+            if (get_data(row)->multiplicity > get_data(col)->multiplicity && row != selected_row) {
+                cover_vertically(row);
+                cover_row(row);
+                get_data(col)->counter -= 1;
+                stack = insert_dangling_after(stack, row);
+            }
         }
     }
     return;
 }
 
-void uncover_column(list col) {
-    list row, other_col, next;
-
-    for (row = col; (row = get_up(row)) != col; ) {
-        for (next = row; (next = get_left(next)) != row; ) {
-            other_col = get_data(next)->list_data;
-            get_data(other_col)->counter += 1;
-            uncover_vertically(next);
+void uncover_column(list col, list selected_row) {
+    list row;
+    if (get_data(col)->multiplicity == 0) {
+        for (row = col; (row = get_up(row)) != col; ) {
+            if (row != selected_row) {
+                uncover_row(row);
+            }
         }
+        uncover_horizontally(col);
     }
-    uncover_horizontally(col);
+    else {
+        for (row = selected_row; (row = get_dangling_previous(row)) != selected_row; ) {
+            uncover_row(row);
+            uncover_vertically(row);
+            get_data(col)->counter += 1;
+        }
+        get_data(col)->counter += 1;
+        uncover_vertically(selected_row);
+    }
+    get_data(col)->multiplicity += get_data(selected_row)->multiplicity;
     return;
 }
 

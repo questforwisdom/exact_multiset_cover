@@ -46,12 +46,22 @@ def test_solution_count_duplicate_rows():
     result = get_solution_count(data)
     assert result == 6
 
-
 def test_solution_count_single_solution():
     data = np.array([[1, 0, 0], [0, 1, 0], [0, 1, 1]], dtype=DTYPE_FOR_ARRAY)
     result = get_solution_count(data)
     assert result == 1
 
+def test_solution_count_multiset_single_solution():
+    data = np.array([[1, 1, 0], [0, 1, 0], [0, 1, 1]], dtype=DTYPE_FOR_ARRAY)
+    target = np.array([1, 2, 1], dtype=DTYPE_FOR_ARRAY)
+    result = get_solution_count(data, target=target)
+    assert result == 1
+
+def test_solution_count_multiset_single_solution_duplicate_rows():
+    data = np.array([[1, 1, 1], [1, 1, 1], [0, 1, 1]], dtype=DTYPE_FOR_ARRAY)
+    target = np.array([2, 2, 2], dtype=DTYPE_FOR_ARRAY)
+    result = get_solution_count(data, target=target)
+    assert result == 1
 
 def test_solution_count_no_solutions():
     data = np.array(
@@ -60,6 +70,13 @@ def test_solution_count_no_solutions():
     result = get_solution_count(data)
     assert result == 0
 
+def test_solution_count_multiset_no_solutions():
+    data = np.array(
+        [[1, 0, 0, 0], [0, 1, 0, 0], [0, 0, 1, 0], [0, 0, 0, 1]], dtype=DTYPE_FOR_ARRAY
+    )
+    target = np.array([1, 1, 1, 2], dtype=DTYPE_FOR_ARRAY)
+    result = get_solution_count(data, target=target)
+    assert result == 0
 
 def test_small_trimino_problem():
     problem = small_trimino_problem()
