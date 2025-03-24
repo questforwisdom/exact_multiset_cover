@@ -87,7 +87,7 @@ See the file examples.md for more detailed examples of use.
 Implementation Overview
 -----------------------
 
-The NumPy module (`exact_cover`) is implemented in four pieces:
+The NumPy module (`exact_multiset_cover`) is implemented in four pieces:
 
 - The lowest level is `quad_linked_list`, which implements a circular
   linked-list with left-, right-, up-, and down-links.

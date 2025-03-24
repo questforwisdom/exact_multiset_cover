@@ -1,6 +1,6 @@
 import numpy as np
 
-from exact_cover.wrapper import solutions_array_to_set
+from exact_multiset_cover.wrapper import solutions_array_to_set
 
 
 def test_solutions_array_to_set():

@@ -203,6 +203,7 @@ def trailing_zero_row_problem():
             {7, 0},
             {1, 10},
             {7, 8},
+        ])
 
 def trivial_multiset_problem():
     multiset = [1, 1, 2]

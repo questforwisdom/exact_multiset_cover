@@ -148,13 +148,13 @@ int enumerate(list sparse_matrix, int k, int max, int *solution, int *solutions,
     }
     // 1. There are no columns left; we've found a solution.
     if (get_right(sparse_matrix) == sparse_matrix) {
-	for (int i=0; i < k; i++) {
+	    for (int i=0; i < k; i++) {
             solutions[i] = solution[i];
-	}
-	for (int i=k; i < solution_size; i++) {
-	    solutions[i] = -1;
-	}
-	return 1;
+	    }
+	    for (int i=k; i < solution_size; i++) {
+            solutions[i] = -1;
+	    }
+	    return 1;
     }
     // 2. There's a column with only zeros. This branch of the search
     //    tree has no solutions and we need to backtrack.
@@ -165,7 +165,9 @@ int enumerate(list sparse_matrix, int k, int max, int *solution, int *solutions,
     else {
         col = choose_column_with_min_data(sparse_matrix, solution_size);
     }
-    if (get_data(col)->counter == 0) return 0;
+    if (get_data(col)->counter == 0) {
+        return 0;
+    }
 
     // Main algorithm:
     for (row = col; (row = get_down(row)) != col; ) {

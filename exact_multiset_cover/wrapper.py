@@ -1,6 +1,6 @@
-from exact_cover_impl import get_exact_cover as raw_get_exact_cover
-from exact_cover_impl import get_solution_count as raw_get_solution_count
-from exact_cover_impl import get_all_solutions as raw_get_all_solutions
+from exact_multiset_cover_impl import get_exact_cover as raw_get_exact_cover
+from exact_multiset_cover_impl import get_solution_count as raw_get_solution_count
+from exact_multiset_cover_impl import get_all_solutions as raw_get_all_solutions
 
 from .error import NoSolution
 from .io import DTYPE_FOR_ARRAY
@@ -61,10 +61,9 @@ def solutions_array_to_set(a):
         i = 0
         while row[i - 1] == -1:
             i = i - 1
-        return row[:i]
+        return row[:i] if i != 0 else row
 
     return set([tuple(truncate(row)) for row in a])
-
 
 def get_all_solutions(matrix, max_count=None, target=None):
     transformed = np.require(
