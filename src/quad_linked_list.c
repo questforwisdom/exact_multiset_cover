@@ -1,6 +1,5 @@
 #include "quad_linked_list.h"
 
-
 /*--------------------------------------------------------------------
  * These are the only pieces that need to be changed if the payload
  * data changes:

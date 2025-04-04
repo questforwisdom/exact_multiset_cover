@@ -1,6 +1,5 @@
 #include "dlx.h"
 
-
 /*
  * This program uses Donald Knuth's Algorithm X to find exact covers
  * of sets.  For details on Algorithm X please see either
@@ -135,6 +134,8 @@ int dlx_get_solution_count(int rows, int cols, char matrix[], char target[]) {
     return solution_count;
 }
 
+// TODO: I'm not entirely sure about this one,  but it looks like solution_count is passed into solution_size by the callers...
+// TODO: also, the data structure for storing solutions might waste memory
 int enumerate(list sparse_matrix, int k, int max, int *solution, int *solutions, int solution_size, list last_col, int last_row_num) {
     list col, row, next;
     int result = 0;

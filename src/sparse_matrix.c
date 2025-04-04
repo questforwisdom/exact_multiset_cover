@@ -1,6 +1,5 @@
 #include "sparse_matrix.h"
 
-
 /*
  *  Given a 2-dimensional matrix represented as a single array,
  *      return a sparse representation of it.
@@ -57,14 +56,27 @@ list create_headers_list(int col_count, char target[]) {
 // sparse_matrix is not NULL
 list populate_sparse_matrix(list sparse_matrix, int row_count, int col_count, char matrix[]) {
     int row_num, col_num;
+    int multiplicity;
+    int skip;
     list col, row_list;
     node_ptr new_node;
 
     for (row_num = 0; row_num < row_count; ++row_num) {
+        skip = 0;
+        for (col_num = 0, col = get_right(sparse_matrix); col_num < col_count; ++col_num, col = get_right(col)) {
+            multiplicity = matrix[(row_num*col_count)+col_num];
+            if (multiplicity > get_data(col)->multiplicity) {
+                // row cannot be part of a solution
+                skip = 1;
+            }
+        }
+        if (skip) {
+            continue;
+        }
         row_list = create_empty_list();
         for (col_num = 0, col = get_right(sparse_matrix); col_num < col_count; ++col_num, col = get_right(col)) {
-            int multiplicity = matrix[(row_num*col_count)+col_num];
-            if (multiplicity > 0 && multiplicity <= get_data(col)->multiplicity) {
+            multiplicity = matrix[(row_num*col_count)+col_num];
+            if (multiplicity > 0) {
                 new_node = create_node(create_data(row_num, multiplicity, col));
                 // If we can't create a new node, abort!
                 if (is_empty(new_node)) {

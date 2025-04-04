@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "exact_multiset_cover"
-version = "1.5.0"
+version = "1.5.1"
 description = "Solve exact cover problems for multisets. Fork of exact_cover"
 readme = "README.md"
 authors = ["Moy Easwaran", "Niklas Zapatka"]

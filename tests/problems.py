@@ -321,3 +321,24 @@ def small_multiset_problem_with_row_exceeding_column_multiplicity():
             {4, 5}
         ],
     )
+
+def row_multiplicity_exceeds_target_multiplicity():
+    multiset = [1, 1, 1]
+    rows = [
+        [0, 2, 1],
+        [1, 0, 0],
+        [0, 1, 0],
+        [0, 1, 1],
+        [0, 0, 1]
+    ]
+
+    return dict(
+        data=np.array(rows, dtype=DTYPE_FOR_ARRAY),
+        target=np.array(multiset, dtype=DTYPE_FOR_ARRAY),
+        solution1=[0, 1],
+        solution_count=2,
+        all_solutions=[
+            {1, 3},
+            {1, 2, 4}
+        ],
+    )
